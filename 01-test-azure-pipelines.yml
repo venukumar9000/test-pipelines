@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
   - main
 
@@ -17,12 +12,14 @@ stages:
           - bash: echo "Build First Job"
 
   - stage: DevDeploy
+    dependsOn: Build
     jobs:
       - job: DevDeployJob
         steps:
           - bash: echo "Dev Deploy"
 
   - stage: QADeploy
+    dependsOn: Build
     jobs:
       - job: QADeployJob
         steps:
@@ -31,3 +28,16 @@ stages:
       - job: QA2
         steps:
           - bash: echo "QA2"
+
+  - stage: ProdDeploy
+    dependsOn:
+      - DevDeploy
+      - QADeploy
+    jobs:
+      - job: ProdDeployJob
+        steps:
+          - bash: echo "Prod Deploy Job"
+
+      - job: Prod2
+        steps:
+          - bash: echo "Prod2"
