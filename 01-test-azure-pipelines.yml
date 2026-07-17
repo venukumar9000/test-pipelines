@@ -41,3 +41,13 @@ stages:
       - job: Prod2
         steps:
           - bash: echo "Prod2"
+
+  - stage: Submit
+    dependsOn:
+      - DevDeploy
+      - QADeploy
+      - ProdDeploy
+    jobs:
+      - job: SubmitJob
+        steps:
+          - bash: echo "Submit the Job"
